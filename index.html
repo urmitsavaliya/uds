@@ -1,0 +1,1002 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+  <title>Urmit Savaliya - AI Tools & UI/Flutter Developer</title>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <link href="https://fonts.googleapis.com" rel="preconnect" />
+  <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&amp;family=Inter:wght@400;500;600;700&amp;display=swap"
+    rel="stylesheet" />
+  <script>
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "primary": "#6366f1",
+            "background-light": "#f8fafc",
+            "background-dark": "#0f172a",
+            "card-dark": "#1e293b",
+            "text-light": "#64748b",
+            "text-dark": "#cbd5e1"
+          },
+          fontFamily: {
+            "display": ["Space Grotesk", "sans-serif"],
+            "body": ["Inter", "sans-serif"],
+          },
+          borderRadius: { "DEFAULT": "0.5rem", "lg": "0.75rem", "xl": "1rem", "full": "9999px" },
+        },
+      },
+    }
+  </script>
+  <style>
+    .btn {
+      @apply flex items-center justify-center w-full px-6 py-3 rounded-lg text-sm font-bold transition-all duration-300;
+    }
+
+    .btn-primary {
+      @apply bg-primary text-white hover:bg-primary/90;
+    }
+
+    .btn-secondary {
+      @apply bg-background-light dark:bg-card-dark border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white/80 hover:bg-slate-100 dark:hover:bg-slate-700/80;
+    }
+
+    /* ===== CSS VARIABLES ===== */
+    :root {
+      /* Flutter Brand Colors */
+      --primary-color: #0175C2;
+      --primary-dark: #02569B;
+      --primary-light: #54C5F8;
+      --accent-color: #40E0D0;
+
+      /* Dark Theme Colors */
+      --bg-primary: #0D1117;
+      --bg-secondary: #161B22;
+      --bg-tertiary: #21262D;
+      --surface-color: #30363D;
+
+      /* Text Colors */
+      --text-primary: #F0F6FC;
+      --text-secondary: #8B949E;
+      --text-muted: #6E7681;
+
+      /* Gradients */
+      --gradient-primary: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-light) 100%);
+
+      /* Spacing */
+      --spacing-sm: 0.5rem;
+      --spacing-md: 1rem;
+      --spacing-lg: 1.5rem;
+      --spacing-xl: 2rem;
+      --spacing-2xl: 3rem;
+      --spacing-3xl: 4rem;
+
+      /* Border Radius */
+      --radius-md: 8px;
+      --radius-full: 50%;
+
+      /* Transitions */
+      --transition-normal: 0.3s ease;
+    }
+
+    /* ===== HERO SECTION ===== */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      position: relative;
+      overflow: hidden;
+      width: 100%;
+    }
+
+    .hero-background {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(ellipse at center, rgba(1, 117, 194, 0.1) 0%, transparent 70%);
+    }
+
+    .particles {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+    }
+
+    .particle {
+      position: absolute;
+      width: 4px;
+      height: 4px;
+      background: var(--primary-color);
+      border-radius: var(--radius-full);
+      opacity: 0.6;
+      animation: float 6s infinite linear;
+    }
+
+    @keyframes float {
+      0% {
+        transform: translateY(100vh) rotate(0deg);
+        opacity: 0;
+      }
+
+      10% {
+        opacity: 0.6;
+      }
+
+      90% {
+        opacity: 0.6;
+      }
+
+      100% {
+        transform: translateY(-100px) rotate(360deg);
+        opacity: 0;
+      }
+    }
+
+    .hero-content {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--spacing-3xl);
+      align-items: center;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 var(--spacing-lg);
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero-title {
+      margin-bottom: var(--spacing-lg);
+      animation: fadeInUp 1s ease;
+    }
+
+    .hero-subtitle {
+      font-size: clamp(1.5rem, 3vw, 2rem);
+      font-weight: 600;
+      margin-bottom: var(--spacing-xl);
+      min-height: 3rem;
+      display: flex;
+      align-items: center;
+      animation: fadeInUp 1s ease 0.2s both;
+    }
+
+    .typing-text {
+      color: var(--primary-color);
+    }
+
+    .cursor {
+      color: var(--primary-color);
+      animation: blink 1s infinite;
+    }
+
+    @keyframes blink {
+
+      0%,
+      50% {
+        opacity: 1;
+      }
+
+      51%,
+      100% {
+        opacity: 0;
+      }
+    }
+
+    .hero-description {
+      font-size: 1.125rem;
+      margin-bottom: var(--spacing-2xl);
+      animation: fadeInUp 1s ease 0.4s both;
+    }
+
+    .hero-buttons {
+      display: flex;
+      gap: var(--spacing-lg);
+      animation: fadeInUp 1s ease 0.6s both;
+    }
+
+    .hero-image {
+      display: flex;
+      justify-content: center;
+      animation: fadeInRight 1s ease 0.8s both;
+    }
+
+    .hero-avatar {
+      position: relative;
+      width: 300px;
+      height: 300px;
+    }
+
+    .hero-avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: var(--radius-full);
+      border: 4px solid var(--primary-color);
+    }
+
+    .avatar-border {
+      position: absolute;
+      top: -10px;
+      left: -10px;
+      right: -10px;
+      bottom: -10px;
+      border: 2px solid var(--primary-light);
+      border-radius: var(--radius-full);
+      animation: rotate 10s linear infinite;
+    }
+
+    @keyframes rotate {
+      from {
+        transform: rotate(0deg);
+      }
+
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    .scroll-indicator {
+      position: absolute;
+      bottom: var(--spacing-xl);
+      left: 50%;
+      transform: translateX(-50%);
+      animation: bounce 2s infinite;
+    }
+
+    .scroll-arrow {
+      color: var(--primary-color);
+      font-size: 1.5rem;
+    }
+
+    @keyframes bounce {
+
+      0%,
+      20%,
+      50%,
+      80%,
+      100% {
+        transform: translateX(-50%) translateY(0);
+      }
+
+      40% {
+        transform: translateX(-50%) translateY(-10px);
+      }
+
+      60% {
+        transform: translateX(-50%) translateY(-5px);
+      }
+    }
+
+    /* ===== ANIMATIONS ===== */
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes fadeInRight {
+      from {
+        opacity: 0;
+        transform: translateX(30px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+
+    /* ===== RESPONSIVE DESIGN ===== */
+    @media (max-width: 1024px) {
+      .hero-content {
+        grid-template-columns: 1fr;
+        text-align: center;
+        gap: var(--spacing-2xl);
+      }
+
+      .hero-image {
+        order: -1;
+      }
+
+      .hero-avatar {
+        width: 250px;
+        height: 250px;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .hero-buttons {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .hero-avatar {
+        width: 200px;
+        height: 200px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .hero-avatar {
+        width: 180px;
+        height: 180px;
+      }
+    }
+
+    /* ===== LOADING SCREEN ===== */
+    #loading-screen {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: var(--bg-primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1040;
+      transition: opacity 0.5s ease, visibility 0.5s ease;
+    }
+
+    #loading-screen.hidden {
+      opacity: 0;
+      visibility: hidden;
+    }
+
+    .loading-content {
+      text-align: center;
+    }
+
+    .flutter-logo {
+      font-size: 4rem;
+      color: var(--primary-color);
+      margin-bottom: var(--spacing-lg);
+      animation: pulse 2s infinite;
+    }
+
+    .loading-text {
+      font-size: 1.25rem;
+      color: var(--text-secondary);
+      margin-bottom: var(--spacing-xl);
+    }
+
+    .loading-bar {
+      width: 200px;
+      height: 4px;
+      background: var(--bg-secondary);
+      border-radius: var(--radius-full);
+      overflow: hidden;
+    }
+
+    .loading-progress {
+      height: 100%;
+      background: var(--gradient-primary);
+      border-radius: var(--radius-full);
+      animation: loading 2s infinite;
+    }
+
+    @keyframes loading {
+      0% {
+        width: 0%;
+      }
+
+      50% {
+        width: 70%;
+      }
+
+      100% {
+        width: 100%;
+      }
+    }
+
+    @keyframes pulse {
+
+      0%,
+      100% {
+        transform: scale(1);
+      }
+
+      50% {
+        transform: scale(1.1);
+      }
+    }
+  </style>
+</head>
+
+<body
+  style="background-color: var(--bg-primary); color: var(--text-primary); font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; margin: 0; padding: 0; min-height: 100vh;">
+  <!-- Loading Screen -->
+  <div id="loading-screen">
+    <div class="loading-content">
+      <div class="flutter-logo">
+        <i class="fas fa-robot"></i>
+      </div>
+      <div class="loading-text">Loading AI-Powered Portfolio...</div>
+      <div class="loading-bar">
+        <div class="loading-progress"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="flex flex-col min-h-screen">
+    <!-- Site Header with Navigation -->
+    <header class="sticky top-0 z-50 bg-background-light/80 dark:bg-background-dark/80 backdrop-blur-sm">
+      <div class="container mx-auto px-4">
+        <div class="flex items-center justify-between h-20 border-b border-slate-200 dark:border-slate-800">
+          <div class="flex items-center gap-3">
+            <div class="flex items-center justify-center w-10 h-10 rounded-full bg-primary text-white">
+              <svg class="h-6 w-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg">
+                <path
+                  d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"
+                  stroke-linecap="round" stroke-linejoin="round"></path>
+              </svg>
+            </div>
+            <h2 class="text-xl font-bold tracking-tight text-slate-900 dark:text-white">Urmit Savaliya</h2>
+          </div>
+          <nav class="hidden md:flex items-center gap-6">
+            <a class="text-sm font-medium text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-colors"
+              href="index.html">Home</a>
+            <a class="text-sm font-medium text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-colors"
+              href="tools.html">Tools</a>
+            <a class="text-sm font-medium text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-colors"
+              href="projects.html">Projects</a>
+          </nav>
+          <div class="flex items-center gap-4">
+            <button class="md:hidden text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white"
+              id="mobile-menu-button">
+              <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16">
+                </path>
+              </svg>
+            </button>
+            <a class="px-6 py-2.5 rounded-lg text-sm font-bold bg-primary text-white hover:bg-primary/90 transition-colors"
+              href="contact.html">
+              contact me
+            </a>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Mobile Menu -->
+    <div id="mobile-menu"
+      class="hidden bg-background-light/80 dark:bg-background-dark/80 backdrop-blur-sm border-b border-slate-200 dark:border-slate-800 md:hidden">
+      <div class="container mx-auto px-4 py-4">
+        <nav class="flex flex-col gap-4">
+          <a class="text-sm font-medium text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-colors"
+            href="index.html">Home</a>
+          <a class="text-sm font-medium text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-colors"
+            href="tools.html">Tools</a>
+          <a class="text-sm font-medium text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-colors"
+            href="projects.html">Projects</a>
+        </nav>
+      </div>
+    </div>
+
+    <!-- Main Content Area -->
+    <main class="flex-grow">
+      <!-- Hero Section -->
+      <section id="home" class="hero">
+        <div class="hero-background">
+          <div class="particles" id="particles"></div>
+        </div>
+        <div class="hero-content">
+          <div class="hero-text">
+            <h1 class="hero-title">
+              Hi, I'm <span class="highlight">urmit</span>
+            </h1>
+            <div class="hero-subtitle">
+              <span class="typing-text" id="typing-text"></span>
+              <span class="cursor">|</span>
+            </div>
+            <p class="hero-description">
+              AI-powered developer creating innovative web and mobile applications ui and other leading AI development
+              platforms for exceptional user experiences.
+            </p>
+
+          </div>
+          <div class="hero-image">
+            <div class="hero-avatar">
+              <img src="./assets/images/developer-avatar.jpg" alt="AI-Powered Developer" />
+              <div class="avatar-border"></div>
+            </div>
+          </div>
+        </div>
+        <div class="scroll-indicator">
+          <div class="scroll-arrow">
+            <i class="fas fa-chevron-down"></i>
+          </div>
+        </div>
+      </section>
+
+      <!-- Technical Skills Section -->
+      <section id="skills" class="py-20 bg-background-light dark:bg-background-dark">
+        <div class="container mx-auto px-4">
+          <h2 class="text-3xl font-bold font-display text-slate-900 dark:text-white text-center mb-12">Technical Skills
+          </h2>
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <!-- Languages -->
+            <div
+              class="bg-white dark:bg-card-dark p-6 rounded-xl border border-slate-200 dark:border-slate-800 hover:border-primary transition-all duration-300">
+              <div class="flex items-center gap-4 mb-4">
+                <div class="w-10 h-10 flex items-center justify-center bg-primary/10 text-primary rounded-lg">
+                  <i class="fas fa-code"></i>
+                </div>
+                <h3 class="text-xl font-semibold text-slate-800 dark:text-white">Languages</h3>
+              </div>
+              <div class="flex flex-wrap gap-2">
+                <span
+                  class="px-3 py-1 bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 rounded-full text-sm">Dart</span>
+                <span
+                  class="px-3 py-1 bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 rounded-full text-sm">C</span>
+                <span
+                  class="px-3 py-1 bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 rounded-full text-sm">C++</span>
+                <span
+                  class="px-3 py-1 bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 rounded-full text-sm">HTML</span>
+                <span
+                  class="px-3 py-1 bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 rounded-full text-sm">CSS
+                  (Basic)</span>
+                <span
+                  class="px-3 py-1 bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 rounded-full text-sm">JavaScript
+                  (Basic)</span>
+              </div>
+            </div>
+
+            <!-- Mobile Development -->
+            <div
+              class="bg-white dark:bg-card-dark p-6 rounded-xl border border-slate-200 dark:border-slate-800 hover:border-primary transition-all duration-300">
+              <div class="flex items-center gap-4 mb-4">
+                <div class="w-10 h-10 flex items-center justify-center bg-primary/10 text-primary rounded-lg">
+                  <i class="fas fa-mobile-alt"></i>
+                </div>
+                <h3 class="text-xl font-semibold text-slate-800 dark:text-white">Mobile Development</h3>
+              </div>
+              <div class="flex flex-wrap gap-2">
+                <span class="px-3 py-1 bg-primary/10 text-primary rounded-full text-sm">Flutter</span>
+                <span class="px-3 py-1 bg-primary/10 text-primary rounded-full text-sm">Dart</span>
+                <span
+                  class="px-3 py-1 bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 rounded-full text-sm">Android
+                  Native</span>
+              </div>
+            </div>
+
+            <!-- API & Data -->
+            <div
+              class="bg-white dark:bg-card-dark p-6 rounded-xl border border-slate-200 dark:border-slate-800 hover:border-primary transition-all duration-300">
+              <div class="flex items-center gap-4 mb-4">
+                <div class="w-10 h-10 flex items-center justify-center bg-primary/10 text-primary rounded-lg">
+                  <i class="fas fa-database"></i>
+                </div>
+                <h3 class="text-xl font-semibold text-slate-800 dark:text-white">API & Data</h3>
+              </div>
+              <div class="flex flex-wrap gap-2">
+                <span
+                  class="px-3 py-1 bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 rounded-full text-sm">RESTful
+                  APIs</span>
+                <span
+                  class="px-3 py-1 bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 rounded-full text-sm">JSON</span>
+                <span
+                  class="px-3 py-1 bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 rounded-full text-sm">XML</span>
+                <span
+                  class="px-3 py-1 bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 rounded-full text-sm">Web
+                  Services</span>
+                <span
+                  class="px-3 py-1 bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 rounded-full text-sm">Socket
+                  Programming</span>
+                <span
+                  class="px-3 py-1 bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 rounded-full text-sm">Dio</span>
+                <span
+                  class="px-3 py-1 bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 rounded-full text-sm">HTTP</span>
+              </div>
+            </div>
+
+            <!-- Libraries & Tools -->
+            <div
+              class="bg-white dark:bg-card-dark p-6 rounded-xl border border-slate-200 dark:border-slate-800 hover:border-primary transition-all duration-300">
+              <div class="flex items-center gap-4 mb-4">
+                <div class="w-10 h-10 flex items-center justify-center bg-primary/10 text-primary rounded-lg">
+                  <i class="fas fa-tools"></i>
+                </div>
+                <h3 class="text-xl font-semibold text-slate-800 dark:text-white">Libraries & Tools</h3>
+              </div>
+              <div class="flex flex-wrap gap-2">
+                <span
+                  class="px-3 py-1 bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 rounded-full text-sm">Firebase</span>
+                <span
+                  class="px-3 py-1 bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 rounded-full text-sm">Firestore</span>
+                <span
+                  class="px-3 py-1 bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 rounded-full text-sm">Google
+                  Maps</span>
+                <span
+                  class="px-3 py-1 bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 rounded-full text-sm">AdMob</span>
+                <span
+                  class="px-3 py-1 bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 rounded-full text-sm">Razorpay</span>
+                <span
+                  class="px-3 py-1 bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 rounded-full text-sm">PayZone</span>
+              </div>
+            </div>
+
+            <!-- Authentication -->
+            <div
+              class="bg-white dark:bg-card-dark p-6 rounded-xl border border-slate-200 dark:border-slate-800 hover:border-primary transition-all duration-300">
+              <div class="flex items-center gap-4 mb-4">
+                <div class="w-10 h-10 flex items-center justify-center bg-primary/10 text-primary rounded-lg">
+                  <i class="fas fa-user-shield"></i>
+                </div>
+                <h3 class="text-xl font-semibold text-slate-800 dark:text-white">Authentication</h3>
+              </div>
+              <div class="flex flex-wrap gap-2">
+                <span
+                  class="px-3 py-1 bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 rounded-full text-sm">Firebase
+                  Auth</span>
+                <span
+                  class="px-3 py-1 bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 rounded-full text-sm">Google
+                  Sign-In</span>
+              </div>
+            </div>
+
+            <!-- Version Control -->
+            <div
+              class="bg-white dark:bg-card-dark p-6 rounded-xl border border-slate-200 dark:border-slate-800 hover:border-primary transition-all duration-300">
+              <div class="flex items-center gap-4 mb-4">
+                <div class="w-10 h-10 flex items-center justify-center bg-primary/10 text-primary rounded-lg">
+                  <i class="fas fa-code-branch"></i>
+                </div>
+                <h3 class="text-xl font-semibold text-slate-800 dark:text-white">Version Control</h3>
+              </div>
+              <div class="flex flex-wrap gap-2">
+                <span
+                  class="px-3 py-1 bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 rounded-full text-sm">Git</span>
+                <span
+                  class="px-3 py-1 bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 rounded-full text-sm">GitHub</span>
+                <span
+                  class="px-3 py-1 bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 rounded-full text-sm">GitLab</span>
+              </div>
+            </div>
+
+            <!-- Others -->
+            <div
+              class="bg-white dark:bg-card-dark p-6 rounded-xl border border-slate-200 dark:border-slate-800 hover:border-primary transition-all duration-300">
+              <div class="flex items-center gap-4 mb-4">
+                <div class="w-10 h-10 flex items-center justify-center bg-primary/10 text-primary rounded-lg">
+                  <i class="fas fa-ellipsis-h"></i>
+                </div>
+                <h3 class="text-xl font-semibold text-slate-800 dark:text-white">Others</h3>
+              </div>
+              <div class="flex flex-wrap gap-2">
+                <span
+                  class="px-3 py-1 bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 rounded-full text-sm">Push
+                  Notifications</span>
+                <span
+                  class="px-3 py-1 bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 rounded-full text-sm">Localization</span>
+                <span
+                  class="px-3 py-1 bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 rounded-full text-sm">Theme
+                  management</span>
+                <span
+                  class="px-3 py-1 bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 rounded-full text-sm">Local
+                  Auth (Fingerprint Lock)</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Projects Section -->
+      <div id="projects" class="mt-12 max-w-4xl mx-auto py-20">
+        <h2 class="text-3xl font-bold font-display text-slate-900 dark:text-white text-center mb-8">My Projects</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <a href="tools.html" class="block">
+            <div
+              class="bg-white dark:bg-card-dark p-6 rounded-xl border border-slate-200 dark:border-slate-800 hover:border-primary dark:hover:border-primary transition-all duration-300 min-h-[320px] flex flex-col">
+              <div
+                class="flex items-center justify-center w-16 h-16 bg-primary/10 text-primary rounded-full mx-auto mb-4">
+                <svg class="h-8 w-8" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"
+                  xmlns="http://www.w3.org/2000/svg">
+                  <path
+                    d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"
+                    stroke-linecap="round" stroke-linejoin="round"></path>
+                </svg>
+              </div>
+              <h3 class="text-xl font-semibold text-slate-800 dark:text-white text-center mb-2">UDTools Platform</h3>
+              <p class="text-text-light dark:text-text-dark text-center mb-4">A comprehensive collection of AI-powered
+                tools built with modern web technologies. Features include image processing, text generation, and
+                creative design tools.</p>
+              <div class="flex flex-wrap gap-2 justify-center">
+                <span class="px-3 py-1 bg-primary/10 text-primary rounded-full text-sm">HTML</span>
+                <span class="px-3 py-1 bg-primary/10 text-primary rounded-full text-sm">CSS</span>
+                <span class="px-3 py-1 bg-primary/10 text-primary rounded-full text-sm">JavaScript</span>
+                <span class="px-3 py-1 bg-primary/10 text-primary rounded-full text-sm">Tailwind</span>
+              </div>
+            </div>
+          </a>
+          <a href="projects/gowin.html" class="block">
+            <div
+              class="bg-white dark:bg-card-dark p-6 rounded-xl border border-slate-200 dark:border-slate-800 hover:border-primary dark:hover:border-primary transition-all duration-300 min-h-[320px] flex flex-col">
+              <div
+                class="flex items-center justify-center w-16 h-16 bg-primary/10 text-primary rounded-full mx-auto mb-4">
+                <svg class="h-8 w-8" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"
+                  xmlns="http://www.w3.org/2000/svg">
+                  <path
+                    d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"
+                    stroke-linecap="round" stroke-linejoin="round"></path>
+                </svg>
+              </div>
+              <h3 class="text-xl font-semibold text-slate-800 dark:text-white text-center mb-2">GoWin Lucky Draw App
+              </h3>
+              <p class="text-text-light dark:text-text-dark text-center mb-4">A mobile app for lucky draws where users
+                play games to earn points, participate in draws, and manage wallet funds. Built with Flutter.</p>
+              <div class="flex flex-wrap gap-2 justify-center">
+                <span class="px-3 py-1 bg-primary/10 text-primary rounded-full text-sm">Flutter</span>
+                <span class="px-3 py-1 bg-primary/10 text-primary rounded-full text-sm">Dart</span>
+                <span class="px-3 py-1 bg-primary/10 text-primary rounded-full text-sm">Firebase</span>
+              </div>
+            </div>
+          </a>
+          <a href="projects/golink.html" class="block">
+            <div
+              class="bg-white dark:bg-card-dark p-6 rounded-xl border border-slate-200 dark:border-slate-800 hover:border-primary dark:hover:border-primary transition-all duration-300 min-h-[320px] flex flex-col">
+              <div
+                class="flex items-center justify-center w-16 h-16 bg-primary/10 text-primary rounded-full mx-auto mb-4">
+                <svg class="h-8 w-8" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"
+                  xmlns="http://www.w3.org/2000/svg">
+                  <path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71"></path>
+                  <path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71"></path>
+                </svg>
+              </div>
+              <h3 class="text-xl font-semibold text-slate-800 dark:text-white text-center mb-2">GoLink - Cloud Database
+                Link Generator</h3>
+              <p class="text-text-light dark:text-text-dark text-center mb-4">An innovative app to generate new cloud
+                databases and obtain access links, then create QR codes for those links and write them to NFC tags. Also
+                features QR code scanning and NFC tag reading capabilities.</p>
+              <div class="flex flex-wrap gap-2 justify-center">
+                <span class="px-3 py-1 bg-primary/10 text-primary rounded-full text-sm">Flutter</span>
+                <span class="px-3 py-1 bg-primary/10 text-primary rounded-full text-sm">Dart</span>
+                <span class="px-3 py-1 bg-primary/10 text-primary rounded-full text-sm">Firebase</span>
+              </div>
+            </div>
+            <a href="projects/smartseva.html" class="block">
+              <div
+                class="bg-white dark:bg-card-dark p-6 rounded-xl border border-slate-200 dark:border-slate-800 hover:border-primary dark:hover:border-primary transition-all duration-300 min-h-[320px] flex flex-col">
+                <div
+                  class="flex items-center justify-center w-16 h-16 bg-primary/10 text-primary rounded-full mx-auto mb-4">
+                  <i class="fas fa-seedling text-2xl"></i>
+                </div>
+                <h3 class="text-xl font-semibold text-slate-800 dark:text-white text-center mb-2">Smartseva</h3>
+                <p class="text-text-light dark:text-text-dark text-center mb-4">A comprehensive mobile app for
+                  government services and agricultural needs. Features real-time market prices, news, and secure file
+                  storage.</p>
+                <div class="flex flex-wrap gap-2 justify-center mt-auto">
+                  <span class="px-3 py-1 bg-primary/10 text-primary rounded-full text-sm">Flutter</span>
+                  <span class="px-3 py-1 bg-primary/10 text-primary rounded-full text-sm">Dart</span>
+                  <span class="px-3 py-1 bg-primary/10 text-primary rounded-full text-sm">Hive</span>
+                </div>
+              </div>
+            </a>
+            <a href="projects/carbuddy.html" class="block">
+              <div
+                class="bg-white dark:bg-card-dark p-6 rounded-xl border border-slate-200 dark:border-slate-800 hover:border-primary dark:hover:border-primary transition-all duration-300 min-h-[320px] flex flex-col">
+                <div
+                  class="flex items-center justify-center w-16 h-16 bg-primary/10 text-primary rounded-full mx-auto mb-4">
+                  <i class="fas fa-car text-2xl"></i>
+                </div>
+                <h3 class="text-xl font-semibold text-slate-800 dark:text-white text-center mb-2">CarBuddy</h3>
+                <p class="text-text-light dark:text-text-dark text-center mb-4">A cross-platform Flutter app connecting
+                  car owners with professional mechanics. Features digital garage management and live service tracking.
+                </p>
+                <div class="flex flex-wrap gap-2 justify-center mt-auto">
+                  <span class="px-3 py-1 bg-primary/10 text-primary rounded-full text-sm">Flutter</span>
+                  <span class="px-3 py-1 bg-primary/10 text-primary rounded-full text-sm">Dart</span>
+                  <span class="px-3 py-1 bg-primary/10 text-primary rounded-full text-sm">Maps</span>
+                </div>
+              </div>
+            </a>
+        </div>
+        <div class="text-center mt-8">
+          <a href="projects.html" class="btn btn-primary inline-flex items-center gap-2 w-auto">
+            View All Projects
+            <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+            </svg>
+          </a>
+        </div>
+      </div>
+
+      <!-- Education Section -->
+      <section id="education" class="py-20 bg-slate-50 dark:bg-slate-900/50">
+        <div class="container mx-auto px-4">
+          <h2 class="text-3xl font-bold font-display text-slate-900 dark:text-white text-center mb-12">Education</h2>
+          <div class="max-w-3xl mx-auto space-y-8">
+            <!-- BCA -->
+            <div class="relative pl-8 border-l-2 border-primary/30">
+              <div
+                class="absolute -left-[9px] top-0 w-4 h-4 bg-primary rounded-full border-4 border-background-light dark:border-background-dark">
+              </div>
+              <div
+                class="bg-white dark:bg-card-dark p-6 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm">
+                <div class="flex flex-col md:flex-row md:items-center justify-between mb-4">
+                  <h3 class="text-xl font-bold text-slate-900 dark:text-white">BCA: Bachelor of Computer Applications
+                  </h3>
+                  <span class="text-primary font-semibold">2022 - 2025</span>
+                </div>
+                <p class="text-lg text-slate-700 dark:text-slate-300 mb-2">Bhakt Kavi Narshih Maheta Univarcity</p>
+                <div class="flex items-center gap-2">
+                  <span class="px-3 py-1 bg-primary/10 text-primary rounded-full text-sm font-bold">Score: 65%</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- HSC -->
+            <div class="relative pl-8 border-l-2 border-primary/30">
+              <div
+                class="absolute -left-[9px] top-0 w-4 h-4 bg-primary/50 rounded-full border-4 border-background-light dark:border-background-dark">
+              </div>
+              <div
+                class="bg-white dark:bg-card-dark p-6 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm opacity-80">
+                <div class="flex flex-col md:flex-row md:items-center justify-between mb-4">
+                  <h3 class="text-xl font-bold text-slate-900 dark:text-white">HSC (Higher Secondary Certificate)</h3>
+                  <span class="text-slate-500 dark:text-slate-400 font-semibold">2022</span>
+                </div>
+                <p class="text-lg text-slate-700 dark:text-slate-300 mb-2">Gujarat Secondary Education Board</p>
+                <div class="flex items-center gap-2">
+                  <span
+                    class="px-3 py-1 bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 rounded-full text-sm font-bold">Score:
+                    75.42%</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+  </div>
+
+  <!-- Font Awesome for the robot icon -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
+
+  <script>
+    // ===== LOADING ANIMATION =====
+    const loadingScreen = document.getElementById('loading-screen');
+
+    function startLoadingAnimation() {
+      // Show loading screen
+      loadingScreen.classList.remove('hidden');
+
+      // Hide loading screen after 2 seconds
+      setTimeout(() => {
+        loadingScreen.classList.add('hidden');
+      }, 2000);
+    }
+
+    // Start animation on page load
+    window.addEventListener('load', () => {
+      startLoadingAnimation();
+    });
+  </script>
+
+  <script>
+    // ===== TYPING ANIMATION =====
+    const typingTexts = [
+      'AI-Powered Developer',
+      'Web & Mobile UI Developer',
+      'AI Tools Expert',
+      'UI Specialist',
+      'Innovation Creator'
+    ];
+
+    let textIndex = 0;
+    let charIndex = 0;
+    let isDeleting = false;
+    let typingSpeed = 100;
+
+    const typingText = document.getElementById('typing-text');
+
+    function typeWriter() {
+      const currentText = typingTexts[textIndex];
+
+      if (isDeleting) {
+        typingText.textContent = currentText.substring(0, charIndex - 1);
+        charIndex--;
+        typingSpeed = 50;
+      } else {
+        typingText.textContent = currentText.substring(0, charIndex + 1);
+        charIndex++;
+        typingSpeed = 100;
+      }
+
+      if (!isDeleting && charIndex === currentText.length) {
+        typingSpeed = 2000;
+        isDeleting = true;
+      } else if (isDeleting && charIndex === 0) {
+        isDeleting = false;
+        textIndex = (textIndex + 1) % typingTexts.length;
+        typingSpeed = 500;
+      }
+
+      setTimeout(typeWriter, typingSpeed);
+    }
+
+    // ===== PARTICLE SYSTEM =====
+    function createParticles() {
+      const particlesContainer = document.getElementById('particles');
+      const particleCount = 50;
+
+      for (let i = 0; i < particleCount; i++) {
+        createParticle(particlesContainer);
+      }
+
+      // Continuously create new particles
+      setInterval(() => {
+        if (particlesContainer.children.length < particleCount) {
+          createParticle(particlesContainer);
+        }
+      }, 300);
+    }
+
+    function createParticle(container) {
+      const particle = document.createElement('div');
+      particle.className = 'particle';
+
+      // Random starting position
+      particle.style.left = Math.random() * 100 + '%';
+      particle.style.animationDuration = (Math.random() * 3 + 2) + 's';
+      particle.style.animationDelay = Math.random() * 2 + 's';
+
+      container.appendChild(particle);
+
+      // Remove particle after animation
+      setTimeout(() => {
+        if (particle.parentNode) {
+          particle.parentNode.removeChild(particle);
+        }
+      }, 8000);
+    }
+
+    // ===== INITIALIZATION =====
+    document.addEventListener('DOMContentLoaded', () => {
+      // Start typing animation after a delay
+      setTimeout(typeWriter, 1000);
+
+      // Create particles
+      createParticles();
+    });
+
+    // Mobile menu toggle
+    const mobileMenuButton = document.getElementById('mobile-menu-button');
+    const mobileMenu = document.getElementById('mobile-menu');
+
+    mobileMenuButton.addEventListener('click', () => {
+      mobileMenu.classList.toggle('hidden');
+    });
+
+    // Close mobile menu when clicking outside or on a link
+    document.addEventListener('click', (e) => {
+      if (!mobileMenu.contains(e.target) && !mobileMenuButton.contains(e.target)) {
+        mobileMenu.classList.add('hidden');
+      }
+    });
+
+    mobileMenu.addEventListener('click', (e) => {
+      if (e.target.tagName === 'A') {
+        mobileMenu.classList.add('hidden');
+      }
+    });
+  </script>
+
+  <script src="assets/js/cursor.js"></script>
+</body>
+
+</html>

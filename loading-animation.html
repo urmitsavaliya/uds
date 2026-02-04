@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Loading Animation Demo</title>
+    <style>
+        /* ===== CSS VARIABLES ===== */
+        :root {
+            /* Flutter Brand Colors */
+            --primary-color: #0175C2;
+            --primary-dark: #02569B;
+            --primary-light: #54C5F8;
+            --accent-color: #40E0D0;
+
+            /* Dark Theme Colors */
+            --bg-primary: #0D1117;
+            --bg-secondary: #161B22;
+            --bg-tertiary: #21262D;
+            --surface-color: #30363D;
+
+            /* Text Colors */
+            --text-primary: #F0F6FC;
+            --text-secondary: #8B949E;
+            --text-muted: #6E7681;
+
+            /* Gradients */
+            --gradient-primary: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-light) 100%);
+
+            /* Spacing */
+            --spacing-lg: 1.5rem;
+            --spacing-xl: 2rem;
+
+            /* Border Radius */
+            --radius-full: 50%;
+
+            /* Transitions */
+            --transition-slow: 0.5s ease;
+
+            /* Z-index */
+            --z-modal: 1040;
+        }
+
+        /* ===== RESET & BASE STYLES ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+        }
+
+        /* ===== LOADING SCREEN ===== */
+        #loading-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--bg-primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: var(--z-modal);
+            transition: opacity var(--transition-slow), visibility var(--transition-slow);
+        }
+
+        #loading-screen.hidden {
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        .loading-content {
+            text-align: center;
+        }
+
+        .flutter-logo {
+            font-size: 4rem;
+            color: var(--primary-color);
+            margin-bottom: var(--spacing-lg);
+            animation: pulse 2s infinite;
+        }
+
+        .loading-text {
+            font-size: 1.25rem;
+            color: var(--text-secondary);
+            margin-bottom: var(--spacing-xl);
+        }
+
+        .loading-bar {
+            width: 200px;
+            height: 4px;
+            background: var(--bg-secondary);
+            border-radius: var(--radius-full);
+            overflow: hidden;
+        }
+
+        .loading-progress {
+            height: 100%;
+            background: var(--gradient-primary);
+            border-radius: var(--radius-full);
+            animation: loading 2s infinite;
+        }
+
+        @keyframes loading {
+            0% {
+                width: 0%;
+            }
+
+            50% {
+                width: 70%;
+            }
+
+            100% {
+                width: 100%;
+            }
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.1);
+            }
+        }
+
+        /* ===== DEMO CONTENT ===== */
+        .demo-content {
+            text-align: center;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        .demo-content.show {
+            opacity: 1;
+        }
+
+        .restart-btn {
+            background: var(--gradient-primary);
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 8px;
+            font-size: 1rem;
+            cursor: pointer;
+            margin-top: 2rem;
+            transition: transform 0.3s ease;
+        }
+
+        .restart-btn:hover {
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Loading Screen -->
+    <div id="loading-screen">
+        <div class="loading-content">
+            <div class="flutter-logo">
+                <i class="fas fa-robot"></i>
+            </div>
+            <div class="loading-text">Loading AI-Powered Portfolio...</div>
+            <div class="loading-bar">
+                <div class="loading-progress"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Demo Content -->
+    <div class="demo-content" id="demo-content">
+        <h1>Loading Animation Complete!</h1>
+        <p>This is a standalone demo of the loading animation from the portfolio.</p>
+        <button class="restart-btn" id="restart-btn">Restart Animation</button>
+    </div>
+
+    <!-- Font Awesome for the robot icon -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
+
+    <script>
+        const loadingScreen = document.getElementById('loading-screen');
+        const demoContent = document.getElementById('demo-content');
+        const restartBtn = document.getElementById('restart-btn');
+
+        function startLoadingAnimation() {
+            // Show loading screen
+            loadingScreen.classList.remove('hidden');
+            demoContent.classList.remove('show');
+
+            // Hide loading screen after 2 seconds
+            setTimeout(() => {
+                loadingScreen.classList.add('hidden');
+                demoContent.classList.add('show');
+            }, 2000);
+        }
+
+        // Start animation on page load
+        window.addEventListener('load', () => {
+            startLoadingAnimation();
+        });
+
+        // Restart animation on button click
+        restartBtn.addEventListener('click', () => {
+            startLoadingAnimation();
+        });
+    </script>
+    <script src="assets/js/cursor.js"></script>
+</body>
+
+</html>

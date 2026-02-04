@@ -1,0 +1,832 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Tools - UDTools</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com" rel="preconnect" />
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Inter:wght@400;500;600;700&display=swap"
+        rel="stylesheet" />
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#6366f1",
+                        "background-light": "#f8fafc",
+                        "background-dark": "#0f172a",
+                        "card-dark": "#1e293b",
+                        "text-light": "#64748b",
+                        "text-dark": "#cbd5e1"
+                    },
+                    fontFamily: {
+                        "display": ["Space Grotesk", "sans-serif"],
+                        "body": ["Inter", "sans-serif"],
+                    },
+                    borderRadius: { "DEFAULT": "0.5rem", "lg": "0.75rem", "xl": "1rem", "full": "9999px" },
+                },
+            },
+        }
+    </script>
+    <style>
+        .btn {
+            @apply flex items-center justify-center w-full px-6 py-3 rounded-lg text-sm font-bold transition-all duration-300;
+        }
+
+        .btn-primary {
+            @apply bg-primary text-white hover:bg-primary/90;
+        }
+
+        .btn-secondary {
+            @apply bg-background-light dark:bg-card-dark border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white/80 hover:bg-slate-100 dark:hover:bg-slate-700/80;
+        }
+
+        /* ===== CSS VARIABLES ===== */
+        :root {
+            /* Flutter Brand Colors */
+            --primary-color: #0175C2;
+            --primary-dark: #02569B;
+            --primary-light: #54C5F8;
+            --accent-color: #40E0D0;
+
+            /* Dark Theme Colors */
+            --bg-primary: #0D1117;
+            --bg-secondary: #161B22;
+            --bg-tertiary: #21262D;
+            --surface-color: #30363D;
+
+            /* Text Colors */
+            --text-primary: #F0F6FC;
+            --text-secondary: #8B949E;
+            --text-muted: #6E7681;
+
+            /* Gradients */
+            --gradient-primary: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-light) 100%);
+
+            /* Spacing */
+            --spacing-sm: 0.5rem;
+            --spacing-md: 1rem;
+            --spacing-lg: 1.5rem;
+            --spacing-xl: 2rem;
+            --spacing-2xl: 3rem;
+            --spacing-3xl: 4rem;
+
+            /* Border Radius */
+            --radius-md: 8px;
+            --radius-full: 50%;
+
+            /* Transitions */
+            --transition-normal: 0.3s ease;
+        }
+
+        /* ===== RESET & BASE STYLES ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            font-size: 16px;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* ===== TYPOGRAPHY ===== */
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6 {
+            font-weight: 600;
+            line-height: 1.2;
+            margin-bottom: var(--spacing-md);
+        }
+
+        h1 {
+            font-size: clamp(2.5rem, 5vw, 4rem);
+        }
+
+        h2 {
+            font-size: clamp(2rem, 4vw, 3rem);
+        }
+
+        h3 {
+            font-size: clamp(1.5rem, 3vw, 2rem);
+        }
+
+        p {
+            margin-bottom: var(--spacing-md);
+            color: var(--text-secondary);
+        }
+
+        .highlight {
+            color: var(--primary-color);
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* ===== BUTTONS ===== */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+            padding: var(--spacing-md) var(--spacing-xl);
+            border: none;
+            border-radius: var(--radius-md);
+            font-family: 'Inter', sans-serif;
+            font-size: 1rem;
+            font-weight: 500;
+            text-decoration: none;
+            cursor: pointer;
+            transition: var(--transition-normal);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            transition: var(--transition-normal);
+        }
+
+        .btn:hover::before {
+            left: 100%;
+        }
+
+        .btn-primary {
+            background: var(--gradient-primary);
+            color: white;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn-secondary {
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+            border: 1px solid var(--surface-color);
+        }
+
+        .btn-secondary:hover {
+            background: var(--surface-color);
+            transform: translateY(-2px);
+        }
+
+        /* ===== HERO SECTION ===== */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+            width: 100%;
+        }
+
+        .hero-background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(ellipse at center, rgba(1, 117, 194, 0.1) 0%, transparent 70%);
+        }
+
+        .particles {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+        }
+
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: var(--primary-color);
+            border-radius: var(--radius-full);
+            opacity: 0.6;
+            animation: float 6s infinite linear;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 0;
+            }
+
+            10% {
+                opacity: 0.6;
+            }
+
+            90% {
+                opacity: 0.6;
+            }
+
+            100% {
+                transform: translateY(-100px) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        .hero-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: var(--spacing-3xl);
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 var(--spacing-lg);
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero-title {
+            margin-bottom: var(--spacing-lg);
+            animation: fadeInUp 1s ease;
+        }
+
+        .hero-subtitle {
+            font-size: clamp(1.5rem, 3vw, 2rem);
+            font-weight: 600;
+            margin-bottom: var(--spacing-xl);
+            min-height: 3rem;
+            display: flex;
+            align-items: center;
+            animation: fadeInUp 1s ease 0.2s both;
+        }
+
+        .typing-text {
+            color: var(--primary-color);
+        }
+
+        .cursor {
+            color: var(--primary-color);
+            animation: blink 1s infinite;
+        }
+
+        @keyframes blink {
+
+            0%,
+            50% {
+                opacity: 1;
+            }
+
+            51%,
+            100% {
+                opacity: 0;
+            }
+        }
+
+        .hero-description {
+            font-size: 1.125rem;
+            margin-bottom: var(--spacing-2xl);
+            animation: fadeInUp 1s ease 0.4s both;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: var(--spacing-lg);
+            animation: fadeInUp 1s ease 0.6s both;
+        }
+
+        .hero-image {
+            display: flex;
+            justify-content: center;
+            animation: fadeInRight 1s ease 0.8s both;
+        }
+
+        .hero-avatar {
+            position: relative;
+            width: 300px;
+            height: 300px;
+        }
+
+        .hero-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: var(--radius-full);
+            border: 4px solid var(--primary-color);
+        }
+
+        .avatar-border {
+            position: absolute;
+            top: -10px;
+            left: -10px;
+            right: -10px;
+            bottom: -10px;
+            border: 2px solid var(--primary-light);
+            border-radius: var(--radius-full);
+            animation: rotate 10s linear infinite;
+        }
+
+        @keyframes rotate {
+            from {
+                transform: rotate(0deg);
+            }
+
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .scroll-indicator {
+            position: absolute;
+            bottom: var(--spacing-xl);
+            left: 50%;
+            transform: translateX(-50%);
+            animation: bounce 2s infinite;
+        }
+
+        .scroll-arrow {
+            color: var(--primary-color);
+            font-size: 1.5rem;
+        }
+
+        @keyframes bounce {
+
+            0%,
+            20%,
+            50%,
+            80%,
+            100% {
+                transform: translateX(-50%) translateY(0);
+            }
+
+            40% {
+                transform: translateX(-50%) translateY(-10px);
+            }
+
+            60% {
+                transform: translateX(-50%) translateY(-5px);
+            }
+        }
+
+        /* ===== ANIMATIONS ===== */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInRight {
+            from {
+                opacity: 0;
+                transform: translateX(30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        /* ===== RESPONSIVE DESIGN ===== */
+        @media (max-width: 1024px) {
+            .hero-content {
+                grid-template-columns: 1fr;
+                text-align: center;
+                gap: var(--spacing-2xl);
+            }
+
+            .hero-image {
+                order: -1;
+            }
+
+            .hero-avatar {
+                width: 250px;
+                height: 250px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .hero-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .hero-avatar {
+                width: 200px;
+                height: 200px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero-avatar {
+                width: 180px;
+                height: 180px;
+            }
+        }
+    </style>
+</head>
+
+<body
+    style="background-color: #0D1117; color: #F0F6FC; font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; margin: 0; padding: 0; min-height: 100vh;">
+    <div class="flex flex-col min-h-screen">
+        <header class="sticky top-0 z-50 bg-background-light/80 dark:bg-background-dark/80 backdrop-blur-sm">
+            <div class="container mx-auto px-4">
+                <div class="flex items-center justify-between h-20 border-b border-slate-200 dark:border-slate-800">
+                    <div class="flex items-center gap-3">
+                        <div class="flex items-center justify-center w-10 h-10 rounded-full bg-primary text-white">
+                            <svg class="h-6 w-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path
+                                    d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"
+                                    stroke-linecap="round" stroke-linejoin="round"></path>
+                            </svg>
+                        </div>
+                        <h2 class="text-xl font-bold tracking-tight text-slate-900 dark:text-white">UDTools</h2>
+                    </div>
+                    <nav class="hidden md:flex items-center gap-6">
+                        <a class="text-sm font-medium text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-colors"
+                            href="index.html">Home</a>
+                        <a class="text-sm font-medium text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-colors"
+                            href="#">Tools</a>
+                        <a class="text-sm font-medium text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-colors"
+                            href="projects.html">Projects</a>
+                    </nav>
+                    <div class="flex items-center">
+                        <a class="px-6 py-2.5 rounded-lg text-sm font-bold bg-primary text-white hover:bg-primary/90 transition-colors"
+                            href="contact.html">
+                            contact me
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <main class="flex-grow">
+            <section class="py-20 sm:py-28">
+                <div class="container mx-auto px-4">
+                    <div class="max-w-5xl mx-auto text-center">
+                        <h1
+                            class="text-4xl sm:text-5xl lg:text-7xl font-bold font-display tracking-tighter text-slate-900 dark:text-white leading-tight">
+                            Explore Our AI Tools
+                        </h1>
+                        <p class="mt-6 text-xl text-text-light dark:text-text-dark max-w-3xl mx-auto">
+                            Discover a comprehensive collection of AI-powered tools designed to enhance your creativity
+                            and productivity.
+                        </p>
+                    </div>
+                    <div class="mt-12 max-w-4xl mx-auto">
+                        <div class="relative">
+                            <input
+                                class="w-full pl-12 pr-4 py-4 rounded-lg bg-white dark:bg-card-dark border border-slate-200 dark:border-slate-800 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 shadow-lg shadow-primary/5"
+                                placeholder="Search for a tool..." type="text" />
+                            <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                                <svg class="h-6 w-6 text-slate-400 dark:text-slate-500" fill="none"
+                                    stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" stroke-linecap="round"
+                                        stroke-linejoin="round"></path>
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mt-16 container mx-auto">
+                        <div id="tools-grid"
+                            class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                            <a class="flex items-center gap-4 p-5 bg-white dark:bg-card-dark rounded-lg border border-slate-200 dark:border-slate-800 hover:border-primary dark:hover:border-primary hover:bg-slate-50 dark:hover:bg-primary/10 transition-all duration-300 group"
+                                href="https://g.co/gemini/share/ce1ac1954975" target="_blank">
+                                <div
+                                    class="flex-shrink-0 w-12 h-12 bg-primary/10 text-primary rounded-lg flex items-center justify-center">
+                                    <svg class="h-6 w-6" fill="none" stroke="currentColor" stroke-width="2"
+                                        viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                        <path
+                                            d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
+                                            stroke-linecap="round" stroke-linejoin="round"></path>
+                                    </svg>
+                                </div>
+                                <div>
+                                    <h3 class="text-lg font-semibold text-slate-800 dark:text-white">Image to Prompt
+                                    </h3>
+                                    <p class="mt-1 text-sm text-text-light dark:text-text-dark">Generate creative
+                                        prompts from any image.</p>
+                                </div>
+                                <svg class="h-5 w-5 text-slate-400 dark:text-slate-600 ml-auto opacity-0 group-hover:opacity-100 transition-opacity"
+                                    fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M9 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"></path>
+                                </svg>
+                            </a>
+                            <a class="flex items-center gap-4 p-5 bg-white dark:bg-card-dark rounded-lg border border-slate-200 dark:border-slate-800 hover:border-primary dark:hover:border-primary hover:bg-slate-50 dark:hover:bg-primary/10 transition-all duration-300 group"
+                                href="https://g.co/gemini/share/aa1d16aa1ef9" target="_blank">
+                                <div
+                                    class="flex-shrink-0 w-12 h-12 bg-primary/10 text-primary rounded-lg flex items-center justify-center">
+                                    <svg class="h-6 w-6" fill="none" stroke="currentColor" stroke-width="2"
+                                        viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                        <path
+                                            d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"
+                                            stroke-linecap="round" stroke-linejoin="round"></path>
+                                    </svg>
+                                </div>
+                                <div>
+                                    <h3 class="text-lg font-semibold text-slate-800 dark:text-white">Poster Generation
+                                    </h3>
+                                    <p class="mt-1 text-sm text-text-light dark:text-text-dark">Design stunning posters
+                                        in seconds.</p>
+                                </div>
+                                <svg class="h-5 w-5 text-slate-400 dark:text-slate-600 ml-auto opacity-0 group-hover:opacity-100 transition-opacity"
+                                    fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M9 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"></path>
+                                </svg>
+                            </a>
+                            <a class="flex items-center gap-4 p-5 bg-white dark:bg-card-dark rounded-lg border border-slate-200 dark:border-slate-800 hover:border-primary dark:hover:border-primary hover:bg-slate-50 dark:hover:bg-primary/10 transition-all duration-300 group"
+                                href="https://g.co/gemini/share/627b3cc7380e" target="_blank">
+                                <div
+                                    class="flex-shrink-0 w-12 h-12 bg-primary/10 text-primary rounded-lg flex items-center justify-center">
+                                    <svg class="h-6 w-6" fill="none" stroke="currentColor" stroke-width="2"
+                                        viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                        <path
+                                            d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                                            stroke-linecap="round" stroke-linejoin="round"></path>
+                                    </svg>
+                                </div>
+                                <div>
+                                    <h3 class="text-lg font-semibold text-slate-800 dark:text-white">Face Swapping</h3>
+                                    <p class="mt-1 text-sm text-text-light dark:text-text-dark">Swap faces in photos
+                                        with incredible realism.</p>
+                                </div>
+                                <svg class="h-5 w-5 text-slate-400 dark:text-slate-600 ml-auto opacity-0 group-hover:opacity-100 transition-opacity"
+                                    fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M9 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"></path>
+                                </svg>
+                            </a>
+                            <a class="flex items-center gap-4 p-5 bg-white dark:bg-card-dark rounded-lg border border-slate-200 dark:border-slate-800 hover:border-primary dark:hover:border-primary hover:bg-slate-50 dark:hover:bg-primary/10 transition-all duration-300 group"
+                                href="https://g.co/gemini/share/4a65398868c6" target="_blank">
+                                <div
+                                    class="flex-shrink-0 w-12 h-12 bg-primary/10 text-primary rounded-lg flex items-center justify-center">
+                                    <svg class="h-6 w-6" fill="none" stroke="currentColor" stroke-width="2"
+                                        viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                        <path
+                                            d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"
+                                            stroke-linecap="round" stroke-linejoin="round"></path>
+                                    </svg>
+                                </div>
+                                <div>
+                                    <h3 class="text-lg font-semibold text-slate-800 dark:text-white">App Idea
+                                        Development</h3>
+                                    <p class="mt-1 text-sm text-text-light dark:text-text-dark">Brainstorm and flesh out
+                                        your next app idea.</p>
+                                </div>
+                                <svg class="h-5 w-5 text-slate-400 dark:text-slate-600 ml-auto opacity-0 group-hover:opacity-100 transition-opacity"
+                                    fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M9 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"></path>
+                                </svg>
+                            </a>
+                            <a class="flex items-center gap-4 p-5 bg-white dark:bg-card-dark rounded-lg border border-slate-200 dark:border-slate-800 hover:border-primary dark:hover:border-primary hover:bg-slate-50 dark:hover:bg-primary/10 transition-all duration-300 group"
+                                href="https://g.co/gemini/share/3aa64fe74efe" target="_blank">
+                                <div
+                                    class="flex-shrink-0 w-12 h-12 bg-primary/10 text-primary rounded-lg flex items-center justify-center">
+                                    <svg class="h-6 w-6" fill="none" stroke="currentColor" stroke-width="2"
+                                        viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                        <path
+                                            d="M7 11.5V14m0-2.5v-6a1.5 1.5 0 113 0m-3 6a1.5 1.5 0 00-3 0v2a7.5 7.5 0 0015 0v-5a1.5 1.5 0 00-3 0m-6-3V11m0-5.5v-1a1.5 1.5 0 013 0v1m0 0V11m0-5.5a1.5 1.5 0 013 0v3m0 0V11"
+                                            stroke-linecap="round" stroke-linejoin="round"></path>
+                                    </svg>
+                                </div>
+                                <div>
+                                    <h3 class="text-lg font-semibold text-slate-800 dark:text-white">Shape-to-Creature
+                                        Generator</h3>
+                                    <p class="mt-1 text-sm text-text-light dark:text-text-dark">Turn simple shapes into
+                                        unique creatures.</p>
+                                </div>
+                                <svg class="h-5 w-5 text-slate-400 dark:text-slate-600 ml-auto opacity-0 group-hover:opacity-100 transition-opacity"
+                                    fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M9 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"></path>
+                                </svg>
+                            </a>
+                            <a class="flex items-center gap-4 p-5 bg-white dark:bg-card-dark rounded-lg border border-slate-200 dark:border-slate-800 hover:border-primary dark:hover:border-primary hover:bg-slate-50 dark:hover:bg-primary/10 transition-all duration-300 group"
+                                href="https://g.co/gemini/share/720d599d33e2" target="_blank">
+                                <div
+                                    class="flex-shrink-0 w-12 h-12 bg-primary/10 text-primary rounded-lg flex items-center justify-center">
+                                    <svg class="h-6 w-6" fill="none" stroke="currentColor" stroke-width="2"
+                                        viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                        <path
+                                            d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"
+                                            stroke-linecap="round" stroke-linejoin="round"></path>
+                                    </svg>
+                                </div>
+                                <div>
+                                    <h3 class="text-lg font-semibold text-slate-800 dark:text-white">AI Scrapbook Friend
+                                    </h3>
+                                    <p class="mt-1 text-sm text-text-light dark:text-text-dark">Create beautiful digital
+                                        scrapbooks effortlessly.</p>
+                                </div>
+                                <svg class="h-5 w-5 text-slate-400 dark:text-slate-600 ml-auto opacity-0 group-hover:opacity-100 transition-opacity"
+                                    fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M9 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"></path>
+                                </svg>
+                            </a>
+                            <a class="flex items-center gap-4 p-5 bg-white dark:bg-card-dark rounded-lg border border-slate-200 dark:border-slate-800 hover:border-primary dark:hover:border-primary hover:bg-slate-50 dark:hover:bg-primary/10 transition-all duration-300 group"
+                                href="https://g.co/gemini/share/a39aefbfcd9e" target="_blank">
+                                <div
+                                    class="flex-shrink-0 w-12 h-12 bg-primary/10 text-primary rounded-lg flex items-center justify-center">
+                                    <svg class="h-6 w-6" fill="none" stroke="currentColor" stroke-width="2"
+                                        viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                        <path
+                                            d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.5L15.232 5.232z"
+                                            stroke-linecap="round" stroke-linejoin="round"></path>
+                                    </svg>
+                                </div>
+                                <div>
+                                    <h3 class="text-lg font-semibold text-slate-800 dark:text-white">AI Signature
+                                        Stylist</h3>
+                                    <p class="mt-1 text-sm text-text-light dark:text-text-dark">Design a personalized
+                                        and stylish signature.</p>
+                                </div>
+                                <svg class="h-5 w-5 text-slate-400 dark:text-slate-600 ml-auto opacity-0 group-hover:opacity-100 transition-opacity"
+                                    fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M9 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"></path>
+                                </svg>
+                            </a>
+                            <a class="flex items-center gap-4 p-5 bg-white dark:bg-card-dark rounded-lg border border-slate-200 dark:border-slate-800 hover:border-primary dark:hover:border-primary hover:bg-slate-50 dark:hover:bg-primary/10 transition-all duration-300 group"
+                                href="https://g.co/gemini/share/29545202ed6b" target="_blank">
+                                <div
+                                    class="flex-shrink-0 w-12 h-12 bg-primary/10 text-primary rounded-lg flex items-center justify-center">
+                                    <svg class="h-6 w-6" fill="none" stroke="currentColor" stroke-width="2"
+                                        viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M13 10V3L4 14h7v7l9-11h-7z" stroke-linecap="round"
+                                            stroke-linejoin="round"></path>
+                                    </svg>
+                                </div>
+                                <div>
+                                    <h3 class="text-lg font-semibold text-slate-800 dark:text-white">Post Caption
+                                        Generation</h3>
+                                    <p class="mt-1 text-sm text-text-light dark:text-text-dark">Generate engaging
+                                        captions for your social media posts.</p>
+                                </div>
+                                <svg class="h-5 w-5 text-slate-400 dark:text-slate-600 ml-auto opacity-0 group-hover:opacity-100 transition-opacity"
+                                    fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M9 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"></path>
+                                </svg>
+                            </a>
+                            <a class="flex items-center gap-4 p-5 bg-white dark:bg-card-dark rounded-lg border border-slate-200 dark:border-slate-800 hover:border-primary dark:hover:border-primary hover:bg-slate-50 dark:hover:bg-primary/10 transition-all duration-300 group"
+                                href="https://g.co/gemini/share/49dfbe750666" target="_blank">
+                                <div
+                                    class="flex-shrink-0 w-12 h-12 bg-primary/10 text-primary rounded-lg flex items-center justify-center">
+                                    <svg class="h-6 w-6" fill="none" stroke="currentColor" stroke-width="2"
+                                        viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                        <path
+                                            d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"
+                                            stroke-linecap="round" stroke-linejoin="round"></path>
+                                    </svg>
+                                </div>
+                                <div>
+                                    <h3 class="text-lg font-semibold text-slate-800 dark:text-white">AI Logo Generator
+                                    </h3>
+                                    <p class="mt-1 text-sm text-text-light dark:text-text-dark">Create unique and
+                                        professional logos with AI.</p>
+                                </div>
+                                <svg class="h-5 w-5 text-slate-400 dark:text-slate-600 ml-auto opacity-0 group-hover:opacity-100 transition-opacity"
+                                    fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M9 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"></path>
+                                </svg>
+                            </a>
+                            <a class="flex items-center gap-4 p-5 bg-white dark:bg-card-dark rounded-lg border border-slate-200 dark:border-slate-800 hover:border-primary dark:hover:border-primary hover:bg-slate-50 dark:hover:bg-primary/10 transition-all duration-300 group"
+                                href="https://g.co/gemini/share/7d51622048e9" target="_blank">
+                                <div
+                                    class="flex-shrink-0 w-12 h-12 bg-primary/10 text-primary rounded-lg flex items-center justify-center">
+                                    <svg class="h-6 w-6" fill="none" stroke="currentColor" stroke-width="2"
+                                        viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                        <path
+                                            d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"
+                                            stroke-linecap="round" stroke-linejoin="round"></path>
+                                        <path d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" stroke-linecap="round"
+                                            stroke-linejoin="round"></path>
+                                    </svg>
+                                </div>
+                                <div>
+                                    <h3 class="text-lg font-semibold text-slate-800 dark:text-white">Product Photoshoot
+                                        Generator</h3>
+                                    <p class="mt-1 text-sm text-text-light dark:text-text-dark">Create realistic product
+                                        photoshoots for e-commerce and marketing.</p>
+                                </div>
+                                <svg class="h-5 w-5 text-slate-400 dark:text-slate-600 ml-auto opacity-0 group-hover:opacity-100 transition-opacity"
+                                    fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M9 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"></path>
+                                </svg>
+                            </a>
+                            <a class="flex items-center gap-4 p-5 bg-white dark:bg-card-dark rounded-lg border border-slate-200 dark:border-slate-800 hover:border-primary dark:hover:border-primary hover:bg-slate-50 dark:hover:bg-primary/10 transition-all duration-300 group"
+                                href="https://g.co/gemini/share/5671f600def3" target="_blank">
+                                <div
+                                    class="flex-shrink-0 w-12 h-12 bg-primary/10 text-primary rounded-lg flex items-center justify-center">
+                                    <svg class="h-6 w-6" fill="none" stroke="currentColor" stroke-width="2"
+                                        viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                        <path
+                                            d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zM21 5a2 2 0 00-2-2h-4a2 2 0 00-2 2v12a4 4 0 004 4h4a2 2 0 002-2V5z"
+                                            stroke-linecap="round" stroke-linejoin="round"></path>
+                                    </svg>
+                                </div>
+                                <div>
+                                    <h3 class="text-lg font-semibold text-slate-800 dark:text-white">AI Powered Design
+                                        Maker</h3>
+                                    <p class="mt-1 text-sm text-text-light dark:text-text-dark">Generate stunning new
+                                        designs and visual concepts with AI.</p>
+                                </div>
+                                <svg class="h-5 w-5 text-slate-400 dark:text-slate-600 ml-auto opacity-0 group-hover:opacity-100 transition-opacity"
+                                    fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M9 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"></path>
+                                </svg>
+                            </a>
+                            <a class="flex items-center gap-4 p-5 bg-white dark:bg-card-dark rounded-lg border border-slate-200 dark:border-slate-800 hover:border-primary dark:hover:border-primary hover:bg-slate-50 dark:hover:bg-primary/10 transition-all duration-300 group"
+                                href="https://g.co/gemini/share/be11cfefcb36" target="_blank">
+                                <div
+                                    class="flex-shrink-0 w-12 h-12 bg-primary/10 text-primary rounded-lg flex items-center justify-center">
+                                    <svg class="h-6 w-6" fill="none" stroke="currentColor" stroke-width="2"
+                                        viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                        <path
+                                            d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"
+                                            stroke-linecap="round" stroke-linejoin="round"></path>
+                                    </svg>
+                                </div>
+                                <div>
+                                    <h3 class="text-lg font-semibold text-slate-800 dark:text-white">Finance Calculator
+                                    </h3>
+                                    <p class="mt-1 text-sm text-text-light dark:text-text-dark">Calculate SIP and SWP
+                                        investments for better financial planning.</p>
+                                </div>
+                                <svg class="h-5 w-5 text-slate-400 dark:text-slate-600 ml-auto opacity-0 group-hover:opacity-100 transition-opacity"
+                                    fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M9 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"></path>
+                                </svg>
+                            </a>
+
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+
+
+        <script>
+            // Search functionality
+            var searchInput = document.querySelector('input[type="text"]');
+            var toolsGrid = document.getElementById('tools-grid');
+            var toolCards = toolsGrid.querySelectorAll('a');
+
+            searchInput.addEventListener('input', function () {
+                var query = this.value.toLowerCase();
+                toolCards.forEach(function (card) {
+                    var title = card.querySelector('h3').textContent.toLowerCase();
+                    var desc = card.querySelector('p').textContent.toLowerCase();
+                    if (title.includes(query) || desc.includes(query)) {
+                        card.style.display = 'flex';
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+            });
+        </script>
+
+        <script src="assets/js/cursor.js"></script>
+    </div>
+</body>
+
+</html>
